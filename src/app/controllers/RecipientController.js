@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 
 import Recipient from '../models/Recipient';
 
-import validationZipCode from '../../utils/validationZipCode';
+import zipCodeValidation from '../../utils/zipCodeValidation';
 
 class RecipientController {
   async index(req, res) {
@@ -23,36 +23,20 @@ class RecipientController {
     });
 
     if (!(await schemaValidator.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validate fails' });
+      return res.status(400).json({ error: 'Validation failed' });
     }
 
-    const zipCodeValid = await validationZipCode(req.body.zip_code);
+    const { zip_code } = req.body;
+
+    const zipCodeValid = await zipCodeValidation(zip_code);
 
     if (!zipCodeValid) {
-      return res.status(400).json({ error: 'Zip Code invalid' });
+      return res.status(400).json({ error: 'Zip code invalid' });
     }
 
-    const {
-      id,
-      name,
-      address,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    } = await Recipient.create(req.body);
+    const recipient = await Recipient.create(req.body);
 
-    return res.json({
-      id,
-      name,
-      address,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    });
+    return res.json(recipient);
   }
 
   async update(req, res) {
@@ -67,42 +51,26 @@ class RecipientController {
     });
 
     if (!(await schemaValidator.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validate fails' });
+      return res.status(400).json({ error: 'Validation failed' });
     }
 
-    const zipCodeValid = await validationZipCode(req.body.zip_code);
+    const { zip_code } = req.body;
+
+    const zipCodeValid = await zipCodeValidation(zip_code);
 
     if (!zipCodeValid) {
-      return res.status(400).json({ error: 'Zip Code invalid' });
+      return res.status(400).json({ error: 'Zip code invalid' });
     }
 
-    const recipient = await Recipient.findByPk(req.params.id);
+    let recipient = await Recipient.findByPk(req.params.id);
 
     if (!recipient) {
       return res.status(400).json({ error: 'Recipient not found' });
     }
 
-    const {
-      id,
-      name,
-      address,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    } = await recipient.update(req.body);
+    recipient = await recipient.update(req.body);
 
-    return res.json({
-      id,
-      name,
-      address,
-      number,
-      complement,
-      state,
-      city,
-      zip_code,
-    });
+    return res.json(recipient);
   }
 
   async delete(req, res) {

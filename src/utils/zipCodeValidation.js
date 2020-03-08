@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-export default async zip_code => {
+export default async zipCode => {
   try {
     const api = axios.create({
-      baseURL: `https://viacep.com.br/ws/${zip_code}/json/`,
+      baseURL: `https://viacep.com.br/ws/${zipCode}/json/`,
     });
 
     const { data: address } = await api.get();
