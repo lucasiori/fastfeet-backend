@@ -1,3 +1,5 @@
 /node_modules
 /tmp/uploads/*.jpg
 /tmp/uploads/*.png
+
+.env

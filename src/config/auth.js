@@ -1,5 +1,5 @@
 export default {
-  secret_key: '378c3b132bc582089917446c149db842',
+  secret_key: process.env.APP_SECRET,
   configurations: {
     expiresIn: '7d',
   },
