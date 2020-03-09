@@ -6,15 +6,17 @@ class NewDeliveryMail {
   }
 
   async handle({ data }) {
-    const { deliveryman, delivery } = data;
+    const { deliveryman, delivery, recipient } = data;
 
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: 'Nova Entrega',
+      subject: 'FastFeet - Você possui uma nova entrega',
       template: 'newdelivery',
       context: {
         deliveryman: deliveryman.name,
         product: delivery.product,
+        recipient,
+        logo: `${process.env.APP_URL}/images/fastfeet.png`,
       },
     });
   }

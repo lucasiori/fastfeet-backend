@@ -1,6 +1,11 @@
 <strong>Olá, {{ deliveryman }}</strong>
-<p>Você possui uma nova entrega disponível para retirada:</p>
+<p>Você possui uma nova entrega disponível para retirada, seguem abaixo as informações:</p>
 <p>
   <strong>Produto: </strong> {{ product }} <br />
+  <strong>Cliente: </strong> {{ recipient.name }} <br />
+  <strong>Endereço: </strong> {{ recipient.address }}, {{ recipient.number }}, {{ recipient.city }} - {{ recipient.state }}
+</p>
+<p>
+  <small>OBS: Entregas só podem ser retiradas entre 08:00 e 18:00 horas</small>
   <br />
 </p>

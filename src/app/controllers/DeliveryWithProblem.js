@@ -1,6 +1,7 @@
 import Delivery from '../models/Delivery';
 import DeliveryProblem from '../models/DeliveryProblem';
 import Deliveryman from '../models/Deliveryman';
+import Recipient from '../models/Recipient';
 
 import DeliveryCancellationMail from '../jobs/DeliveryCancellationMail';
 import Queue from '../../lib/Queue';
@@ -47,10 +48,12 @@ class DeliveryWithProblem {
     await delivery.save();
 
     const deliveryman = await Deliveryman.findByPk(delivery.deliveryman_id);
+    const recipient = await Recipient.findByPk(delivery.recipient_id);
 
     await Queue.add(DeliveryCancellationMail.key, {
       deliveryman,
       delivery,
+      recipient,
     });
 
     return res.json();

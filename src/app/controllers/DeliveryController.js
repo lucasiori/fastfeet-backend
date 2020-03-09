@@ -5,6 +5,7 @@ import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 
 import NewDeliveryMail from '../jobs/NewDeliveryMail';
+import DeliveryCancellationMail from '../jobs/DeliveryCancellationMail';
 import Queue from '../../lib/Queue';
 
 class DeliveryController {
@@ -68,6 +69,7 @@ class DeliveryController {
     await Queue.add(NewDeliveryMail.key, {
       deliveryman,
       delivery,
+      recipient,
     });
 
     return res.json(delivery);
@@ -87,6 +89,15 @@ class DeliveryController {
     delivery.canceled_at = new Date();
 
     await delivery.save();
+
+    const deliveryman = await Deliveryman.findByPk(delivery.deliveryman_id);
+    const recipient = await Recipient.findByPk(delivery.recipient_id);
+
+    await Queue.add(DeliveryCancellationMail.key, {
+      deliveryman,
+      delivery,
+      recipient,
+    });
 
     return res.json();
   }

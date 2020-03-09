@@ -1,6 +1,8 @@
 <strong>Olá, {{ deliveryman }}</strong>
-<p>Sua entrega foi cancelada:</p>
+<p>A seguinte entrega foi cancelada:</p>
 <p>
   <strong>Produto: </strong> {{ product }} <br />
+  <strong>Cliente: </strong> {{ recipient.name }} <br />
+  <strong>Endereço: </strong> {{ recipient.address }}, {{ recipient.number }}, {{ recipient.city }} - {{ recipient.state }}
   <br />
 </p>

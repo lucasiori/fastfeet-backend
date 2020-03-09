@@ -6,15 +6,17 @@ class DeliveryCancellationMail {
   }
 
   async handle({ data }) {
-    const { deliveryman, delivery } = data;
+    const { deliveryman, delivery, recipient } = data;
 
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: 'Cancelamento de entrega',
+      subject: 'FastFeet - Cancelamento de Entrega',
       template: 'deliverycancellation',
       context: {
         deliveryman: deliveryman.name,
         product: delivery.product,
+        recipient,
+        logo: `${process.env.APP_URL}/images/fastfeet.png`,
       },
     });
   }
