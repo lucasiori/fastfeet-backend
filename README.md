@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/lucasiori/gobarber-backend/blob/master/gostack-node.png" alt="GoStack">
+  <img src="https://github.com/lucasiori/fastfeet-backend/blob/master/fastfeet-backend.png" alt="GoStack">
 </p>
 
 <h1>FastFeet - Backend</h1>
