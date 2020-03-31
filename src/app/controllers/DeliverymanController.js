@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
@@ -6,7 +7,19 @@ import Delivery from '../models/Delivery';
 
 class DeliverymanController {
   async index(req, res) {
-    const deliverymen = await Deliveryman.findAll({
+    const { q: deliverymanNameFiler, page = 1 } = req.query;
+    const whereClausule = {};
+
+    if (deliverymanNameFiler) {
+      whereClausule.name = {
+        [Op.iLike]: `%${deliverymanNameFiler}%`,
+      };
+    }
+
+    const { count, rows: deliverymen } = await Deliveryman.findAndCountAll({
+      where: whereClausule,
+      limit: 10,
+      offset: (page - 1) * 10,
       include: [
         {
           model: File,
@@ -15,6 +28,8 @@ class DeliverymanController {
         },
       ],
     });
+
+    res.header('X-Total-Count', count);
 
     return res.json(deliverymen);
   }
@@ -41,6 +56,9 @@ class DeliverymanController {
         return res.status(400).json({ error: 'Avatar not found' });
       }
 
+      /**
+       * Check avatar isn't being use
+       */
       const deliveryFile = await Delivery.findOne({
         where: { signature_id: avatar_id },
       });
@@ -102,6 +120,9 @@ class DeliverymanController {
         return res.status(400).json({ error: 'Avatar not found' });
       }
 
+      /**
+       * Check avatar isn't being use
+       */
       const deliveryFile = await Delivery.findOne({
         where: { signature_id: avatar_id },
       });

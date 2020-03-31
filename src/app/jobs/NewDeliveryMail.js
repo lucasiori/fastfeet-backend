@@ -16,7 +16,7 @@ class NewDeliveryMail {
         deliveryman: deliveryman.name,
         product: delivery.product,
         recipient,
-        logo: `${process.env.APP_URL}/images/fastfeet.png`,
+        logo: `${process.env.APP_URL}/assets/fastfeet.png`,
       },
     });
   }

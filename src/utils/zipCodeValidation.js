@@ -6,9 +6,9 @@ export default async zipCode => {
       baseURL: `https://viacep.com.br/ws/${zipCode}/json/`,
     });
 
-    const { data: address } = await api.get();
+    const response = await api.get();
 
-    return address.cep !== undefined;
+    return response.data && response.data.cep;
   } catch (error) {
     return false;
   }

@@ -24,12 +24,12 @@ class StartDeliveryController {
       return res.status(400).json({ error: 'Delivery not found' });
     }
 
-    if (delivery.start_date && !delivery.end_date) {
-      return res.status(400).json({ error: 'Delivery already started' });
-    }
-
     if (delivery.end_date) {
       return res.status(400).json({ error: 'Delivery already finished' });
+    }
+
+    if (delivery.start_date) {
+      return res.status(400).json({ error: 'Delivery already started' });
     }
 
     const date = new Date();
@@ -43,7 +43,7 @@ class StartDeliveryController {
       },
     });
 
-    if (todayDeliveries >= 5) {
+    if (todayDeliveries === 5) {
       return res.status(400).json({
         error: 'Deliveries limit per day exceeded for the deliveryman',
       });

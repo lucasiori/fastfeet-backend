@@ -8,7 +8,11 @@ import Queue from '../../lib/Queue';
 
 class DeliveryWithProblem {
   async index(req, res) {
-    const deliveries = await Delivery.findAll({
+    const { page = 1 } = req.query;
+
+    const { count, rows: deliveries } = await Delivery.findAndCountAll({
+      limit: 10,
+      offset: (page - 1) * 10,
       include: [
         {
           model: DeliveryProblem,
@@ -18,6 +22,8 @@ class DeliveryWithProblem {
         },
       ],
     });
+
+    res.header('X-Total-Count', count);
 
     return res.json(deliveries);
   }

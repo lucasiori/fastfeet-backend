@@ -6,8 +6,15 @@ import Recipient from '../models/Recipient';
 
 class DeliveryProblemController {
   async index(req, res) {
-    const deliveryProblems = await DeliveryProblem.findAll({
+    const { page = 1 } = req.query;
+
+    const {
+      count,
+      rows: deliveryProblems,
+    } = await DeliveryProblem.findAndCountAll({
       where: { delivery_id: req.params.id },
+      limit: 10,
+      offset: (page - 1) * 10,
       include: [
         {
           model: Delivery,
@@ -23,6 +30,8 @@ class DeliveryProblemController {
         },
       ],
     });
+
+    res.header('X-Total-Count', count);
 
     return res.json(deliveryProblems);
   }
@@ -48,10 +57,6 @@ class DeliveryProblemController {
 
     if (!delivery) {
       return res.status(400).json({ error: 'Delivery not found' });
-    }
-
-    if (!delivery.start_date) {
-      return res.status(400).json({ error: 'Delivery not started' });
     }
 
     if (delivery.end_date) {

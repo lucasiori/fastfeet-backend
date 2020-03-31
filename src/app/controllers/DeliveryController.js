@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Delivery from '../models/Delivery';
 import Recipient from '../models/Recipient';
@@ -16,12 +17,21 @@ class DeliveryController {
       return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
+    const { q: productNameFilter } = req.query;
+    const whereClausule = {
+      deliveryman_id: req.params.id,
+      canceled_at: null,
+      end_date: null,
+    };
+
+    if (productNameFilter) {
+      whereClausule.product = {
+        [Op.iLike]: `%${productNameFilter}%`,
+      };
+    }
+
     const deliveries = await Delivery.findAll({
-      where: {
-        deliveryman_id: req.params.id,
-        canceled_at: null,
-        end_date: null,
-      },
+      where: whereClausule,
       include: [
         {
           model: Recipient,

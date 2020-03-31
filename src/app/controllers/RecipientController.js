@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
 
 import Recipient from '../models/Recipient';
 
@@ -6,7 +7,22 @@ import zipCodeValidation from '../../utils/zipCodeValidation';
 
 class RecipientController {
   async index(req, res) {
-    const recipients = await Recipient.findAll();
+    const { q: recipientNameFiler, page = 1 } = req.query;
+    const whereClausule = {};
+
+    if (recipientNameFiler) {
+      whereClausule.name = {
+        [Op.iLike]: `%${recipientNameFiler}%`,
+      };
+    }
+
+    const { count, rows: recipients } = await Recipient.findAndCountAll({
+      where: whereClausule,
+      limit: 10,
+      offset: (page - 1) * 10,
+    });
+
+    res.header('X-Total-Count', count);
 
     return res.json(recipients);
   }
@@ -31,7 +47,7 @@ class RecipientController {
     const zipCodeValid = await zipCodeValidation(zip_code);
 
     if (!zipCodeValid) {
-      return res.status(400).json({ error: 'Zip code invalid' });
+      return res.status(400).json({ error: 'Invalid zip code' });
     }
 
     const recipient = await Recipient.create(req.body);
@@ -59,7 +75,7 @@ class RecipientController {
     const zipCodeValid = await zipCodeValidation(zip_code);
 
     if (!zipCodeValid) {
-      return res.status(400).json({ error: 'Zip code invalid' });
+      return res.status(400).json({ error: 'Invalid zip code' });
     }
 
     let recipient = await Recipient.findByPk(req.params.id);

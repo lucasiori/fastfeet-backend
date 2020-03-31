@@ -18,7 +18,7 @@ class Recipient extends Model {
     );
 
     this.addHook('beforeSave', recipient => {
-      recipient.zip_code = recipient.zip_code.replace('-', '');
+      recipient.zip_code = Number(recipient.zip_code.replace('-', ''));
     });
 
     return this;

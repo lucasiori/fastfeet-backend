@@ -14,7 +14,9 @@ class FinishDeliveryController {
       return res.status(400).json({ error: 'Deliveryman not found' });
     }
 
-    const deliveries = await Delivery.findAll({
+    const { page = 1 } = req.query;
+
+    const { count, rows: deliveries } = await Delivery.findAndCountAll({
       where: {
         deliveryman_id: req.params.id,
         canceled_at: null,
@@ -22,6 +24,8 @@ class FinishDeliveryController {
           [Op.not]: null,
         },
       },
+      limit: 10,
+      offset: (page - 1) * 10,
       include: [
         {
           model: Recipient,
@@ -35,6 +39,8 @@ class FinishDeliveryController {
         },
       ],
     });
+
+    res.header('X-Total-Count', count);
 
     return res.json(deliveries);
   }
@@ -53,9 +59,12 @@ class FinishDeliveryController {
     const signature = await File.findByPk(signature_id);
 
     if (!signature) {
-      return res.status(400).json({ error: "Recipient's signature not found" });
+      return res.status(400).json({ error: "Recipient's signature required" });
     }
 
+    /**
+     * Check signature isn't being use
+     */
     const deliveryFile = await Delivery.findOne({ where: { signature_id } });
 
     const deliverymanFile = await Deliveryman.findOne({

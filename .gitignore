@@ -1,5 +1,6 @@
 /node_modules
 /tmp/uploads/*.jpg
 /tmp/uploads/*.png
+/tmp/uploads/*.jfif
 
 .env
