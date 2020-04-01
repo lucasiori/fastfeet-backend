@@ -4,6 +4,7 @@ import express from 'express';
 import { resolve } from 'path';
 import Youch from 'youch';
 import * as Sentry from '@sentry/node';
+import cors from 'cors';
 
 import 'express-async-errors';
 
@@ -26,13 +27,14 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(cors());
     this.server.use(
       '/files',
       express.static(resolve(__dirname, '..', 'tmp', 'uploads'))
     );
     this.server.use(
-      '/images',
-      express.static(resolve(__dirname, '.', 'images'))
+      '/assets',
+      express.static(resolve(__dirname, '.', 'assets'))
     );
   }
 
