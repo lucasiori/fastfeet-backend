@@ -216,6 +216,15 @@ enviando uma foto da assinatura do destinatário</p>
       &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
   </li>
   
+   <li>
+    <span>
+      <strong>(base_url)/deliveries/(delivery_id)</strong> - Retorna os dados da entrega
+    </span> <br />
+      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
+      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+  </li>
+  
   <li>
     <span><strong>(base_url)/problems</strong> - Retorna uma lista de problemas na entrega</span> <br />
     &nbsp;&nbsp; <strong>Query Param:</strong> <br />
