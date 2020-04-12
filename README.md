@@ -2,7 +2,7 @@
   <image src="https://github.com/lucasiori/fastfeet-backend/blob/master/.github/fastfeet-backend.png" alt="FastFeet" width="500" />
 </h1>
 
-<h3 align="center">FastFeet</h3>
+<h3 align="center">👞 FastFeet</h3>
 
 <blockquote align="center">Aplicação final desenvolvida durante o Bootcamp GoStack</blockquote>
 
