@@ -2,6 +2,7 @@ import Delivery from '../models/Delivery';
 import DeliveryProblem from '../models/DeliveryProblem';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
+import File from '../models/File';
 
 import DeliveryCancellationMail from '../jobs/DeliveryCancellationMail';
 import Queue from '../../lib/Queue';
@@ -11,18 +12,44 @@ class DeliveryWithProblem {
     const { page = 1 } = req.query;
 
     const { count, rows: deliveries } = await Delivery.findAndCountAll({
+      where: { canceled_at: null },
       limit: 10,
       offset: (page - 1) * 10,
+      order: [['updated_at', 'DESC']],
+      attributes: { exclude: ['created_at', 'updated_at'] },
       include: [
         {
+          model: Recipient,
+          as: 'recipient',
+          attributes: { exclude: ['created_at', 'updated_at'] },
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: { exclude: ['created_at', 'updated_at'] },
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['path', 'url'],
+            },
+          ],
+        },
+        {
           model: DeliveryProblem,
-          as: 'problems',
+          as: 'problem',
           attributes: ['id', 'description'],
           required: true,
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['path', 'url'],
         },
       ],
     });
 
+    res.header('Access-Control-Expose-Headers', 'X-Total-Count');
     res.header('X-Total-Count', count);
 
     return res.json(deliveries);
@@ -32,26 +59,28 @@ class DeliveryWithProblem {
     const deliveryProblem = await DeliveryProblem.findByPk(req.params.id);
 
     if (!deliveryProblem) {
-      return res.status(400).json({ error: 'Delivery problem not found' });
+      return res
+        .status(400)
+        .json({ error: 'Problema na entrega não encontrado' });
     }
 
-    const delivery = await Delivery.findByPk(deliveryProblem.delivery_id);
+    let delivery = await Delivery.findByPk(deliveryProblem.delivery_id);
 
     if (!delivery) {
-      return res.status(400).json({ error: 'Delivery not found' });
+      return res.status(400).json({ error: 'Entrega não encontrada' });
     }
 
     if (delivery.canceled_at) {
-      return res.status(400).json({ error: 'Delivery already canceled' });
+      return res.status(400).json({ error: 'Entrega já cancelada' });
     }
 
     if (delivery.end_date) {
-      return res.status(400).json({ error: 'Delivery already finished' });
+      return res.status(400).json({ error: 'Entrega já finalizada' });
     }
 
-    delivery.canceled_at = new Date();
-
-    await delivery.save();
+    delivery = await delivery.update({
+      canceled_at: new Date(),
+    });
 
     const deliveryman = await Deliveryman.findByPk(delivery.deliveryman_id);
     const recipient = await Recipient.findByPk(delivery.recipient_id);
@@ -62,7 +91,7 @@ class DeliveryWithProblem {
       recipient,
     });
 
-    return res.json();
+    return res.json(delivery);
   }
 }
 

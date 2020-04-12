@@ -7,13 +7,15 @@ import authConfig from '../../config/auth';
 
 class SessionController {
   async store(req, res) {
-    const schemaValidator = Yup.object().shape({
+    const schema = Yup.object().shape({
       email: Yup.string().required(),
       password: Yup.string().required(),
     });
 
-    if (!(await schemaValidator.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation failed' });
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({
+        error: 'Erro ao iniciar sessão, por favor verifique os dados',
+      });
     }
 
     const { email, password } = req.body;
@@ -21,17 +23,20 @@ class SessionController {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(400).json({ error: 'User not found' });
+      return res.status(400).json({ error: 'Usuário não encontrado' });
     }
 
     const passwordMatch = await user.checkPassword(password);
 
     if (!passwordMatch) {
-      return res.status(400).json({ error: 'Password does not match' });
+      return res.status(400).json({ error: 'Senha inválida' });
     }
 
+    const { id, name } = user;
+
     return res.json({
-      jwt: jwt.sign(
+      user: { id, name, email },
+      token: jwt.sign(
         { id: user.id },
         authConfig.secret_key,
         authConfig.configurations

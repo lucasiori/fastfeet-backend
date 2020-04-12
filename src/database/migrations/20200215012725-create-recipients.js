@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      number: {
+      address_number: {
         type: Sequelize.STRING,
         allowNull: false,
       },

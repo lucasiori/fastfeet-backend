@@ -10,13 +10,18 @@ class NewDeliveryMail {
 
     await Mail.sendMail({
       to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: 'FastFeet - Você possui uma nova entrega',
+      subject: 'FastFeet - Nova Entrega',
       template: 'newdelivery',
       context: {
         deliveryman: deliveryman.name,
         product: delivery.product,
         recipient,
-        logo: `${process.env.APP_URL}/assets/fastfeet.png`,
+        images: {
+          logo: `${process.env.APP_URL}/assets/logo.png`,
+          product: `${process.env.APP_URL}/assets/email-produto.png`,
+          customer: `${process.env.APP_URL}/assets/email-cliente.png`,
+          address: `${process.env.APP_URL}/assets/email-endereco.png`,
+        },
       },
     });
   }

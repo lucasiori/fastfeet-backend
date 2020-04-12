@@ -1,8 +1,30 @@
-<strong>Olá, {{ deliveryman }}</strong>
-<p>A seguinte entrega foi cancelada:</p>
-<p>
-  <strong>Produto: </strong> {{ product }} <br />
-  <strong>Cliente: </strong> {{ recipient.name }} <br />
-  <strong>Endereço: </strong> {{ recipient.address }}, {{ recipient.number }}, {{ recipient.city }} - {{ recipient.state }}
-  <br />
+<strong style="color: #222; font-size: 24px">Olá, {{ deliveryman }}</strong>
+<p style="margin: 10px 0">Você possui uma entrega cancelada, seguem abaixo as informações:</p>
+<p style="margin: 10px 0">
+  <div style="display: flex; flex-direction: row; align-items: flex-start">
+     <img src={{ images.product }} width="35" />
+
+     <span style="margin-left: 10px; line-height: 2.5">
+       <strong style="color: #222; line-height: 1">Produto:</strong> <br />
+       {{ product }}
+     </span>
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: flex-start; margin-left: 7px">
+     <img src={{ images.customer }} width="22" />
+
+     <span style="margin-left: 17px; line-height: 2.5">
+       <strong style="color: #222; line-height: 1">Cliente:</strong> <br />
+       {{ recipient.name }}
+     </span>
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: flex-start; margin-left: 7px">
+     <img src={{ images.address }} width="22" />
+
+     <span style="margin-left: 17px; line-height: 2.5">
+       <strong style="color: #222; line-height: 1">Endereço:</strong> <br />
+       {{ recipient.address }}, {{ recipient.address_number }}, {{ recipient.city }} - {{ recipient.state }}
+     </span>
+  </div>
 </p>

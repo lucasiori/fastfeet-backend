@@ -1,0 +1,37 @@
+<strong style="color: #222; font-size: 24px">Olá, {{ newDelivery.deliveryman.name }}</strong>
+<p style="margin: 10px 0">Você possui uma alteração na entrega, seguem abaixo as informações:</p>
+<p style="margin: 10px 0">
+  <div style="display: flex; flex-direction: row; align-items: flex-start">
+    <img src={{ images.product }} width="35" />
+
+    <span style="margin-left: 10px; line-height: 2.5">
+      <strong style="color: #222; line-height: 1">Produto:</strong> <br />
+      <span style="display: block; color: #fb6f91; text-decoration: line-through; margin-bottom: -15px">{{ oldDelivery.product }}</span>
+      <span>{{ newDelivery.product }}</span>
+    </span>
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: flex-start; margin-left: 7px">
+    <img src={{ images.customer }} width="22" />
+
+    <span style="margin-left: 17px; line-height: 2.5">
+      <strong style="color: #222; line-height: 1">Cliente:</strong> <br />
+      <span style="display: block; color: #fb6f91; text-decoration: line-through; margin-bottom: -15px">{{ oldDelivery.recipient.name }}</span>
+      <span>{{ newDelivery.recipient.name }}</span>
+    </span>
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: flex-start; margin-left: 7px">
+    <img src={{ images.address }} width="22" />
+
+    <span style="margin-left: 17px; line-height: 2.5">
+      <strong style="color: #222; line-height: 1">Endereço:</strong> <br />
+      <span style="display: block; color: #fb6f91; text-decoration: line-through; margin-bottom: -15px">
+        {{ oldDelivery.recipient.address }}, {{ oldDelivery.recipient.address_number }}, {{ oldDelivery.recipient.city }} - {{ oldDelivery.recipient.state }}
+      </span>
+      <span>
+        {{ newDelivery.recipient.address }}, {{ newDelivery.recipient.address_number }}, {{ newDelivery.recipient.city }} - {{ newDelivery.recipient.state }}
+      </span>
+     </span>
+  </div>
+</p>

@@ -17,35 +17,40 @@ import multerConfig from './config/multer';
 const routes = new Router();
 const upload = multer(multerConfig);
 
-routes.get('/recipients', RecipientController.index);
-
 routes.post('/sessions', SessionController.store);
+
+routes.get('/recipients', RecipientController.index);
+routes.get('/recipients/:id', RecipientController.show);
 
 routes.use(authMiddleware);
 
-routes.get('/deliverymen', DeliverymanController.index);
-routes.get('/deliverymen/:id/deliveries', DeliveryController.index);
-routes.get(
-  '/deliverymen/:id/finished-deliveries',
-  FinishDeliveryController.index
-);
-routes.get('/deliveries/:id/problems', DeliveryProblemController.index);
-routes.get('/problems/deliveries', DeliveryWithProblem.index);
+routes.post('/files', upload.single('file'), FileController.store);
 
 routes.post('/recipients', RecipientController.store);
+routes.put('/recipients/:id', RecipientController.update);
+routes.delete('/recipients/:id', RecipientController.delete);
+
+routes.get('/deliverymen', DeliverymanController.index);
+routes.get('/deliverymen/:id', DeliverymanController.show);
 routes.post('/deliverymen', DeliverymanController.store);
-routes.post('/files', upload.single('file'), FileController.store);
+routes.put('/deliverymen/:id', DeliverymanController.update);
+routes.delete('/deliverymen/:id', DeliverymanController.delete);
+
+routes.get('/deliveries', DeliveryController.index);
+routes.get('/deliveries/:id', DeliveryController.show);
 routes.post('/deliveries', DeliveryController.store);
+routes.put('/deliveries/:id', DeliveryController.update);
+routes.delete('/deliveries/:id', DeliveryController.delete);
+
+routes.put('/deliveries/:id/start', StartDeliveryController.update);
+
+routes.put('/deliveries/:id/finish', FinishDeliveryController.update);
+
+routes.get('/problems', DeliveryProblemController.index);
+routes.get('/deliveries/:id/problems', DeliveryProblemController.show);
 routes.post('/deliveries/:id/problems', DeliveryProblemController.store);
 
-routes.put('/recipients/:id', RecipientController.update);
-routes.put('/deliverymen/:id', DeliverymanController.update);
-routes.put('/deliveries/:delivery_id/start', StartDeliveryController.update);
-routes.put('/deliveries/:delivery_id/finish', FinishDeliveryController.update);
-
-routes.delete('/recipients/:id', RecipientController.delete);
-routes.delete('/deliverymen/:id', DeliverymanController.delete);
-routes.delete('/deliveries/:id', DeliveryController.delete);
+routes.get('/problems/deliveries', DeliveryWithProblem.index);
 routes.delete('/problems/:id/cancel-delivery', DeliveryWithProblem.delete);
 
 export default routes;

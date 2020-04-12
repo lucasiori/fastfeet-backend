@@ -1,21 +1,20 @@
 import Mail from '../../lib/Mail';
 
-class DeliveryCancellationMail {
+class ChangeDeliveryMail {
   get key() {
-    return 'DeliveryCancellationMail';
+    return 'ChangeDeliveryMail';
   }
 
   async handle({ data }) {
-    const { deliveryman, delivery, recipient } = data;
+    const { oldDelivery, newDelivery } = data;
 
     await Mail.sendMail({
-      to: `${deliveryman.name} <${deliveryman.email}>`,
-      subject: 'FastFeet - Cancelamento de Entrega',
-      template: 'deliverycancellation',
+      to: `${newDelivery.deliveryman.name} <${newDelivery.deliveryman.email}>`,
+      subject: 'FastFeet - Alteração na Entrega',
+      template: 'changedelivery',
       context: {
-        deliveryman: deliveryman.name,
-        product: delivery.product,
-        recipient,
+        newDelivery,
+        oldDelivery,
         images: {
           logo: `${process.env.APP_URL}/assets/logo.png`,
           product: `${process.env.APP_URL}/assets/email-produto.png`,
@@ -27,4 +26,4 @@ class DeliveryCancellationMail {
   }
 }
 
-export default new DeliveryCancellationMail();
+export default new ChangeDeliveryMail();
