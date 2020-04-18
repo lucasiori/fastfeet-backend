@@ -2,7 +2,7 @@
   <image src="https://github.com/lucasiori/fastfeet-backend/blob/master/.github/fastfeet-backend.png" alt="FastFeet" width="500" />
 </h1>
 
-<h3 align="center">FastFeet</h3>
+<h3 align="center">👞 FastFeet</h3>
 
 <blockquote align="center">Aplicação final desenvolvida durante o Bootcamp GoStack</blockquote>
 
@@ -20,6 +20,7 @@
 e você pode consultar os detalhes, como produto, status e se a entrega teve/possui algum problema.</p>
 <p>No aplicativo mobile, o usuário pode consultar o status da entrega e cadastrar problemas para a mesma, além de finalizar a entrega
 enviando uma foto da assinatura do destinatário</p>
+<p>💻 Frontend: <a href="https://github.com/lucasiori/fastfeet-frontend">FastFeet - Frontend</a></p>
 
 <br /> 
 
@@ -173,33 +174,68 @@ enviando uma foto da assinatura do destinatário</p>
 
 <ul>
   <li>
-    <span><strong>(base_url)/recipients</strong> - Retorna uma lista de destinatários</span> <br /><br />
-  </li>
-  
-  <li>
-    <span><strong>(base_url)/deliverymen</strong> - Retorna uma lista de entregadores</span> <br /><br />
+    <span><strong>(base_url)/recipients</strong> - Retorna uma lista de destinatários</span> <br />
+      &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>q:</strong> Nome do destinatário <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br /><br />
   </li>
   
   <li>
     <span>
-      <strong>(base_url)/deliverymen/(deliveryman_id)/deliveries</strong> - Retorna uma lista de entregas para o entregador
+      <strong>(base_url)/recipients/(recipient_id)</strong> - Retorna os dados do destinatário
     </span> <br />
       &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador que deseja buscar as entregas <br />
-     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>recipient_id:</strong> ID do destinatário <br /><br />
+  </li>
+  
+  <li>
+    <span><strong>(base_url)/deliverymen</strong> - Retorna uma lista de entregadores</span> <br />
+    &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>q:</strong> Nome do entregador <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br />
+    &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
   </li>
   
   <li>
     <span>
-      <strong>(base_url)/deliverymen/(deliveryman_id)/finished-deliveries</strong> - Retorna uma lista de entregas finalizadas para o entregador
+      <strong>(base_url)/deliverymen/(deliveryman_id)</strong> - Retorna os dados do entregador
     </span> <br />
-     &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador que deseja buscar as entregas <br />
-     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador <br />
+      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+  </li>
+  
+  <li>
+    <span>
+      <strong>(base_url)/deliveries</strong> - Retorna uma lista de entregas</span> <br />
+      &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>q:</strong> Nome do produto <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>status:</strong> Status da entrega (pending, started, finalized, canceled) <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman:</strong> ID do entregador <br />
+      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+  </li>
+  
+   <li>
+    <span>
+      <strong>(base_url)/deliveries/(delivery_id)</strong> - Retorna os dados da entrega
+    </span> <br />
+      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
+      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
+  </li>
+  
+  <li>
+    <span><strong>(base_url)/problems</strong> - Retorna uma lista de problemas na entrega</span> <br />
+    &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br />
+    &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
   </li>
   
   <li>
     <span><strong>(base_url)/problems/deliveries</strong> - Retorna uma lista de entregas que possuem problemas</span> <br />
+    &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br />
     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
   </li>
   
@@ -207,6 +243,8 @@ enviando uma foto da assinatura do destinatário</p>
     <span><strong>(base_url)/deliveries/(delivery_id)/problems</strong> - Retorna uma lista de problemas para a entrega</span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega que deseja buscar os problemas <br />
+     &nbsp;&nbsp; <strong>Query Param:</strong> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>page:</strong> Número da página de itens (10 itens por página) <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br /><br />
   </li>
 </ul>
@@ -251,7 +289,7 @@ enviando uma foto da assinatura do destinatário</p>
   <li>
     <span><strong>(base_url)/deliveries/(delivery_id)/problems</strong> - Cadastrar um novo problema para a entrega</span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega que deseja cadastrar o problema <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Body:</strong> Dados do problema (JSON) <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Dados do problema cadastrado (JSON) <br /><br />
@@ -262,35 +300,44 @@ enviando uma foto da assinatura do destinatário</p>
 
 <ul>
   <li>
-    <span><strong>(base_url)/recipients/(recipient_id)</strong> - Atualizar um registro de destinatário</span> <br />
+    <span><strong>(base_url)/recipients/(recipient_id)</strong> - Atualizar o destinatário</span> <br />
       &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>recipient_id:</strong> ID do destinatário que será atualizado <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>recipient_id:</strong> ID do destinatário <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Body:</strong> Dados do destinatário (JSON) <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Dados do destinatário atualizado (JSON) <br /><br />
   </li>
   
   <li>
-    <span><strong>(base_url)/deliverymen/(deliveryman_id)	</strong> - Atualizar um registro de entregador</span> <br />
+    <span><strong>(base_url)/deliverymen/(deliveryman_id)	</strong> - Atualizar o entregador</span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador que será atualizado <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Body:</strong> Dados do entregador (JSON) <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Dados do entregador atualizado (JSON) <br /><br />
   </li>
   
   <li>
-    <span><strong>(base_url)/deliveries/(delivery_id)/start	</strong> - Atualizar status da entrega para iniciado </span> <br />
+    <span><strong>(base_url)/deliveries/(delivery_id)	</strong> - Atualizar a entrega</span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega que será atualizada <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
+     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
+     &nbsp;&nbsp; <strong>Body:</strong> Dados da entrega (JSON) <br />
+     &nbsp;&nbsp; <strong>Retorno:</strong> Dados da entrega atualizada (JSON) <br /><br />
+  </li>
+  
+  <li>
+    <span><strong>(base_url)/deliveries/(delivery_id)/start	</strong> - Iniciar a entrega </span> <br />
+     &nbsp;&nbsp; <strong>Route Param:</strong> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Dados da entrega atualizada (JSON) <br /><br />
   </li>
   
   <li>
-    <span><strong>(base_url/deliveries/(delivery_id)/finish	</strong> - Atualizar status da entrega para finalizado </span> <br />
+    <span><strong>(base_url/deliveries/(delivery_id)/finish	</strong> - Finalizar a entrega </span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega que será atualizada <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Dados da entrega atualizada (JSON) <br /><br />
   </li>
@@ -300,34 +347,34 @@ enviando uma foto da assinatura do destinatário</p>
 
 <ul>
   <li>
-    <span><strong>(base_url)/recipients/(recipient_id)</strong> - Deletar um registro de destinatário </span> <br />
+    <span><strong>(base_url)/recipients/(recipient_id)</strong> - Deletar o destinatário </span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>recipient_id:</strong> ID do destinatário que será deletado <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>recipient_id:</strong> ID do destinatário <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
   </li>
   
   <li>
-    <span><strong>(base_url)/deliverymen/(deliveryman_id)</strong> - Deletar um registro de entregador </span> <br />
+    <span><strong>(base_url)/deliverymen/(deliveryman_id)</strong> - Deletar o entregador </span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador que será deletado <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador <br />
+     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
+     &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
+  </li>
+  
+   <li>
+    <span><strong>(base_url)/deliverymen/(deliveryman_id)</strong> - Deletar a entrega </span> <br />
+     &nbsp;&nbsp; <strong>Route Param:</strong> <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
   </li>
   
   <li>
-    <span><strong>(base_url)/deliveries/(delivery_id)</strong> - Deletar um registro de entrega (Cancelamento) </span> <br />
+    <span><strong>(base_url)/problems/(problems_id)/cancel-delivery</strong> - Cancelar a entrega </span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega que será deletada (cancelada) <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>problems_id:</strong> ID do problema pertencente à entrega<br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
-     &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
-  </li>
-  
-  <li>
-    <span><strong>(base_url)/problems/(problems_id)/cancel-delivery</strong> - Deletar um registro de entrega (Cancelamento) </span> <br />
-     &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>problems_id:</strong> ID do problema pertencente à entrega que será deletada (cancelada) <br />
-     &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
-     &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
+     &nbsp;&nbsp; <strong>Retorno:</strong> Dados da entrega cancelada (JSON) <br /><br />
   </li>
 </ul>
