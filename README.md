@@ -381,9 +381,9 @@ enviando uma foto da assinatura do destinatário</p>
   </li>
   
    <li>
-    <span><strong>/deliverymen/(deliveryman_id)</strong> - Deletar a entrega </span> <br />
+    <span><strong>/delivery/(delivery_id)</strong> - Deletar a entrega </span> <br />
      &nbsp;&nbsp; <strong>Route Param:</strong> <br />
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>deliveryman_id:</strong> ID do entregador <br />
+     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>delivery_id:</strong> ID da entrega <br />
      &nbsp;&nbsp; <strong>Autenticação:</strong> Bearer token Jwt <br />
      &nbsp;&nbsp; <strong>Retorno:</strong> Status 200, sem conteúdo. <br /><br />
   </li>
