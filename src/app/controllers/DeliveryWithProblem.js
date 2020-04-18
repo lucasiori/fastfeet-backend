@@ -15,7 +15,9 @@ class DeliveryWithProblem {
       where: { canceled_at: null },
       limit: 10,
       offset: (page - 1) * 10,
-      order: [['updated_at', 'DESC']],
+      order: [
+        [{ model: DeliveryProblem, as: 'problems' }, 'updated_at', 'DESC'],
+      ],
       attributes: { exclude: ['created_at', 'updated_at'] },
       include: [
         {
@@ -37,7 +39,7 @@ class DeliveryWithProblem {
         },
         {
           model: DeliveryProblem,
-          as: 'problem',
+          as: 'problems',
           attributes: ['id', 'description'],
           required: true,
         },

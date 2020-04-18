@@ -2,6 +2,7 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import SessionController from './app/controllers/SessionController';
+import MobileSessionController from './app/controllers/MobileSessionController';
 import RecipientController from './app/controllers/RecipientController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import FileController from './app/controllers/FileController';
@@ -18,6 +19,7 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
+routes.post('/sessions/mobile', MobileSessionController.store);
 
 routes.get('/recipients', RecipientController.index);
 routes.get('/recipients/:id', RecipientController.show);
@@ -37,6 +39,7 @@ routes.put('/deliverymen/:id', DeliverymanController.update);
 routes.delete('/deliverymen/:id', DeliverymanController.delete);
 
 routes.get('/deliveries', DeliveryController.index);
+routes.get('/deliverymen/:id/deliveries', DeliveryController.index);
 routes.get('/deliveries/:id', DeliveryController.show);
 routes.post('/deliveries', DeliveryController.store);
 routes.put('/deliveries/:id', DeliveryController.update);
@@ -47,8 +50,8 @@ routes.put('/deliveries/:id/start', StartDeliveryController.update);
 routes.put('/deliveries/:id/finish', FinishDeliveryController.update);
 
 routes.get('/problems', DeliveryProblemController.index);
-routes.get('/deliveries/:id/problems', DeliveryProblemController.show);
-routes.post('/deliveries/:id/problems', DeliveryProblemController.store);
+routes.get('/deliveries/:id/problems', DeliveryProblemController.index);
+routes.post('/problems', DeliveryProblemController.store);
 
 routes.get('/problems/deliveries', DeliveryWithProblem.index);
 routes.delete('/problems/:id/cancel-delivery', DeliveryWithProblem.delete);

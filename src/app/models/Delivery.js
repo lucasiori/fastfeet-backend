@@ -33,9 +33,9 @@ class Delivery extends Model {
       as: 'signature',
     });
 
-    this.hasOne(models.DeliveryProblem, {
+    this.hasMany(models.DeliveryProblem, {
       foreignKey: 'delivery_id',
-      as: 'problem',
+      as: 'problems',
     });
   }
 }

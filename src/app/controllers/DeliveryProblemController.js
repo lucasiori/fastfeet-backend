@@ -9,12 +9,14 @@ import File from '../models/File';
 class DeliveryProblemController {
   async index(req, res) {
     const { page = 1 } = req.query;
+    const { id: delivery_id } = req.params;
 
     const { count, rows: problems } = await DeliveryProblem.findAndCountAll({
+      where: delivery_id ? { delivery_id } : {},
       limit: 10,
       offset: (page - 1) * 10,
       order: [['updated_at', 'DESC']],
-      attributes: { exclude: ['created_at', 'updated_at'] },
+      attributes: { exclude: ['updated_at'] },
       include: [
         {
           model: Delivery,
@@ -51,60 +53,17 @@ class DeliveryProblemController {
         ...problem.toJSON(),
         delivery: {
           ...problem.toJSON().delivery,
-          cancelable: problem.toJSON().delivery.canceled_at === null,
+          cancelable:
+            problem.toJSON().delivery.canceled_at === null &&
+            problem.toJSON().delivery.end_date === null,
         },
       }))
     );
   }
 
-  async show(req, res) {
-    const { page = 1 } = req.query;
-
-    const problem = await DeliveryProblem.findOne({
-      where: { delivery_id: req.params.id },
-      limit: 10,
-      offset: (page - 1) * 10,
-      order: [['updated_at', 'DESC']],
-      attributes: { exclude: ['created_at', 'updated_at'] },
-      include: [
-        {
-          model: Delivery,
-          as: 'delivery',
-          attributes: { exclude: ['created_at', 'updated_at'] },
-          include: [
-            {
-              model: Recipient,
-              as: 'recipient',
-              attributes: { exclude: ['created_at', 'updated_at'] },
-            },
-            {
-              model: Deliveryman,
-              as: 'deliveryman',
-              attributes: { exclude: ['created_at', 'updated_at'] },
-              include: [
-                {
-                  model: File,
-                  as: 'avatar',
-                  attributes: ['path', 'url'],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    });
-
-    return res.json({
-      ...problem.toJSON(),
-      delivery: {
-        ...problem.toJSON().delivery,
-        cancelable: problem.toJSON().delivery.canceled_at === null,
-      },
-    });
-  }
-
   async store(req, res) {
     const schema = Yup.object().shape({
+      delivery_id: Yup.number().required(),
       description: Yup.string().required(),
     });
 
@@ -115,8 +74,10 @@ class DeliveryProblemController {
       });
     }
 
+    const { delivery_id } = req.body;
+
     const delivery = await Delivery.findOne({
-      where: { id: req.params.id, canceled_at: null },
+      where: { id: delivery_id, canceled_at: null },
     });
 
     if (!delivery) {
@@ -127,10 +88,11 @@ class DeliveryProblemController {
       return res.status(400).json({ error: 'Entrega já finalizada' });
     }
 
-    const deliveryProblem = await DeliveryProblem.create({
-      delivery_id: req.params.id,
-      description: req.body.description,
-    });
+    if (!delivery.start_date) {
+      return res.status(400).json({ error: 'Entrega não foi iniciada' });
+    }
+
+    const deliveryProblem = await DeliveryProblem.create(req.body);
 
     return res.json(deliveryProblem);
   }

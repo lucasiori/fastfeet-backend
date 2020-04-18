@@ -15,7 +15,8 @@ import getDeliveryStatus from '../../utils/getDeliveryStatus';
 
 class DeliveryController {
   async index(req, res) {
-    const { q: queryFilter, status = '', deliveryman, page = 1 } = req.query;
+    const { q: queryFilter, status = '', page = 1 } = req.query;
+    const { id: deliveryman_id } = req.params;
     const where = {};
 
     /** Adiciona o filtro por nome do produto */
@@ -31,9 +32,6 @@ class DeliveryController {
         where.canceled_at = null;
 
         if (status.toLowerCase() === 'pending') {
-          where.start_date = null;
-        } else if (status.toLowerCase() === 'started') {
-          where.start_date = { [Op.not]: null };
           where.end_date = null;
         } else if (status.toLowerCase() === 'finalized') {
           where.end_date = { [Op.not]: null };
@@ -42,8 +40,8 @@ class DeliveryController {
     }
 
     /** Adiciona o filtro por entregador */
-    if (deliveryman) {
-      where.deliveryman_id = deliveryman;
+    if (deliveryman_id) {
+      where.deliveryman_id = deliveryman_id;
     }
 
     const { count, rows: deliveries } = await Delivery.findAndCountAll({
@@ -51,7 +49,7 @@ class DeliveryController {
       limit: 10,
       offset: (page - 1) * 10,
       order: [['updated_at', 'DESC']],
-      attributes: { exclude: ['created_at', 'updated_at'] },
+      attributes: { exclude: ['updated_at'] },
       include: [
         {
           model: Recipient,
@@ -287,6 +285,15 @@ class DeliveryController {
     }
 
     delivery.destroy();
+
+    const deliveryman = await Deliveryman.findByPk(delivery.deliveryman_id);
+    const recipient = await Recipient.findByPk(delivery.recipient_id);
+
+    await Queue.add(DeliveryCancellationMail.key, {
+      deliveryman,
+      delivery,
+      recipient,
+    });
 
     return res.send();
   }
