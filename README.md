@@ -32,7 +32,9 @@ enviando uma foto da assinatura do destinatário</p>
 <p><strong>OBS:</strong> Para uma melhor experiência ao usar o aplicativo mobile, não configure o endereço do backend como "localhost", use o IP.</p>
 <p>Acesse a pasta do projeto e execute o seguinte comando para instalar as dependências necessárias para o projeto:</p>
 <p><code>npm install</code></p>
-<p>Agora, com todas as dependências instaladas, para iniciar o serviço execute o comando:</p>
+<p>Agora, com todas as dependências instaladas, para gerar o build do projeto execute o comando:</p>
+<p><code>npm run build</code></p>
+<p>Após finalizado o build, inicie o serviço executando o comando:</p>
 <p><code>npm start</code></p>
 <p>O serviço será executado na porta 3333.</p>
 <p>Para iniciar o servidor de tarefas em background (envio de emails):</p>
